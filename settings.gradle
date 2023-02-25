@@ -1,0 +1,4 @@
+rootProject.name = "AutoTrack"
+include ':app'
+include ':autotrack-core'
+include ':autotrack-plugin'
