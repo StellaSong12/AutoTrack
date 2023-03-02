@@ -45,10 +45,7 @@ class GLAutoTrackTransformHelper {
                                                    'androidx.core.app.ComponentActivity',
                                                    'android.support.v4.app.NotificationManagerCompat',
                                                    'android.support.v4.app.SupportActivity',
-                                                   'cn.jpush.android.service.PluginMeizuPlatformsReceiver',
-                                                   'androidx.appcompat.widget.ActionMenuPresenter$OverflowMenuButton',
-                                                   'android.widget.ActionMenuPresenter$OverflowMenuButton',
-                                                   'android.support.v7.widget.ActionMenuPresenter$OverflowMenuButton',]
+                                                   'cn.jpush.android.service.PluginMeizuPlatformsReceiver']
     URLClassLoader urlClassLoader
 
     GLAutoTrackTransformHelper(GLAutoTrackExtension extension, BaseExtension android) {

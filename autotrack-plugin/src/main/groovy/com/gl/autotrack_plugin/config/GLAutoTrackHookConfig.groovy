@@ -18,14 +18,6 @@ class GLAutoTrackHookConfig {
                 1, 1,
                 [Opcodes.ALOAD]))
         addInterfaceMethod(new GLAutoTrackMethodCell(
-                'onRatingChanged',
-                '(Landroid/widget/RatingBar;FZ)V',
-                'android/widget/RatingBar$OnRatingBarChangeListener',
-                'trackViewOnClick',
-                '(Landroid/view/View;)V',
-                1, 1,
-                [Opcodes.ALOAD]))
-        addInterfaceMethod(new GLAutoTrackMethodCell(
                 'onStopTrackingTouch',
                 '(Landroid/widget/SeekBar;)V',
                 'android/widget/SeekBar$OnSeekBarChangeListener',
@@ -52,32 +44,32 @@ class GLAutoTrackHookConfig {
     }
 
     static {
-        addClassMethod(new GLAutoTrackMethodCell(
-                'performClick',
-                '()Z',
-                'androidx/appcompat/widget/ActionMenuPresenter$OverflowMenuButton',
-                'trackViewOnClick',
-                '(Landroid/view/View;)V',
-                0, 1,
-                [Opcodes.ALOAD]))
-
-        addClassMethod(new GLAutoTrackMethodCell(
-                'performClick',
-                '()Z',
-                'android/support/v7/widget/ActionMenuPresenter$OverflowMenuButton',
-                'trackViewOnClick',
-                '(Landroid/view/View;)V',
-                0, 1,
-                [Opcodes.ALOAD]))
-
-        addClassMethod(new GLAutoTrackMethodCell(
-                'performClick',
-                '()Z',
-                'android/widget/ActionMenuPresenter$OverflowMenuButton',
-                'trackViewOnClick',
-                '(Landroid/view/View;)V',
-                0, 1,
-                [Opcodes.ALOAD]))
+//        addClassMethod(new GLAutoTrackMethodCell(
+//                'performClick',
+//                '()Z',
+//                'androidx/appcompat/widget/ActionMenuPresenter$OverflowMenuButton',
+//                'trackViewOnClick',
+//                '(Landroid/view/View;)V',
+//                0, 1,
+//                [Opcodes.ALOAD]))
+//
+//        addClassMethod(new GLAutoTrackMethodCell(
+//                'performClick',
+//                '()Z',
+//                'android/support/v7/widget/ActionMenuPresenter$OverflowMenuButton',
+//                'trackViewOnClick',
+//                '(Landroid/view/View;)V',
+//                0, 1,
+//                [Opcodes.ALOAD]))
+//
+//        addClassMethod(new GLAutoTrackMethodCell(
+//                'performClick',
+//                '()Z',
+//                'android/widget/ActionMenuPresenter$OverflowMenuButton',
+//                'trackViewOnClick',
+//                '(Landroid/view/View;)V',
+//                0, 1,
+//                [Opcodes.ALOAD]))
     }
 
     static void addInterfaceMethod(GLAutoTrackMethodCell AutoTrackMethodCell) {
@@ -124,10 +116,10 @@ class GLAutoTrackHookConfig {
                 '(Landroid/view/View;)V',
                 1, 1,
                 [Opcodes.ALOAD]))
-        addLambdaMethod(new GLAutoTrackMethodCell(
-                'onRatingChanged',
-                '(Landroid/widget/RatingBar;FZ)V',
-                'Landroid/widget/RatingBar$OnRatingBarChangeListener;',
+        SAMPLING_LAMBDA_METHODS.add(new GLAutoTrackMethodCell(
+                'onCheckedChanged',
+                '(Landroid/widget/CompoundButton;Z)V',
+                'Landroid/widget/CompoundButton$OnCheckedChangeListener;',
                 'trackViewOnClick',
                 '(Landroid/view/View;)V',
                 1, 1,

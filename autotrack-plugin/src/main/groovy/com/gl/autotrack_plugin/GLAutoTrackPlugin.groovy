@@ -37,9 +37,6 @@ class GLAutoTrackPlugin implements Plugin<Project> {
         String asmVersion = properties.getOrDefault("glAutoTrack.asmVersion", "ASM7")
         GLAutoTrackUtil.updateASMVersion(asmVersion)
 
-        Logger.error(disableGlAutoTrackPlugin)
-        Logger.error(debugPlugin)
-
         if (!disableGlAutoTrackPlugin) {
             BaseExtension baseExtension
             if (project.getPlugins().hasPlugin("com.android.application")) {
