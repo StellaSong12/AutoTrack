@@ -1,4 +1,4 @@
-package com.gl.autotrack;
+package com.gl.autotrack.util;
 
 import android.text.TextUtils;
 import android.view.View;
@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+
+import com.gl.autotrack.GLAutoTrackManager;
 
 public class ViewTrackUtil {
 

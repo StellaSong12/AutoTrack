@@ -1,4 +1,4 @@
-package com.gl.autotrack;
+package com.gl.autotrack.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,6 +8,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.gl.autotrack.GLAutoTrackManager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;

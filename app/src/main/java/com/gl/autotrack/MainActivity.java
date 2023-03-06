@@ -41,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
     public void initAutoTrack() {
         GLAutoTrackManager.instance().setDebug(true);
         GLAutoTrackManager.instance().setListener(new GLAutoTrackManager.TrackListener() {
+
             @Override
-            public void trackTabLayoutSelected(Object object, Object tab, String hint) {
+            public void trackTabLayoutSelected(Object tab, String hint) {
 
             }
 

@@ -1,7 +1,10 @@
 package com.gl.autotrack;
 
 import android.content.Context;
+import android.os.Message;
 import android.view.View;
+
+import com.gl.autotrack.util.ViewMsgUtil;
 
 import java.io.File;
 
@@ -11,6 +14,7 @@ public class GLAutoTrackManager {
     private boolean debug = false;
 
     private TrackListener listener;
+    private AutoTrackHandler handler;
 
     public static GLAutoTrackManager instance() {
         if (sInstance == null) {
@@ -24,7 +28,7 @@ public class GLAutoTrackManager {
     }
 
     private GLAutoTrackManager() {
-
+        handler = new AutoTrackHandler(AutoTrackThread.getInstance());
     }
 
     public TrackListener getListener() {
@@ -47,9 +51,16 @@ public class GLAutoTrackManager {
         return ViewMsgUtil.getSpFilePath(context);
     }
 
+    public void post(Object o, int type) {
+        Message message = handler.obtainMessage();
+        message.what = type;
+        message.obj = o;
+        handler.sendMessage(message);
+    }
+
     public interface TrackListener {
 
-        void trackTabLayoutSelected(Object object, Object tab, String hint);
+        void trackTabLayoutSelected(Object tab, String hint);
 
         void trackViewOnClick(View view, String text);
     }

@@ -30,7 +30,7 @@ class GLAutoTrackPlugin implements Plugin<Project> {
         // 是否开启多线程编译
         boolean disableGlAutoTrackMultiThreadBuild = Boolean.parseBoolean(properties.getOrDefault("glAutoTrack.disableMultiThreadBuild", "false"))
         // 是否开启增量编译
-        boolean disableGlAutoTrackIncrementalBuild = Boolean.parseBoolean(properties.getOrDefault("glAutoTrack.disableIncrementalBuild", "false"))
+        boolean disableGlAutoTrackIncrementalBuild = Boolean.parseBoolean(properties.getOrDefault("glAutoTrack.disableIncrementalBuild", "true"))
         // 是否在方法进入时插入代码
         boolean isHookOnMethodEnter = Boolean.parseBoolean(properties.getOrDefault("glAutoTrack.isHookOnMethodEnter", "false"))
         // 指定asm版本
