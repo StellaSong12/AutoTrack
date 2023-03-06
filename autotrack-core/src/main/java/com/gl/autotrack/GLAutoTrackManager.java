@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Message;
 import android.view.View;
 
+import com.gl.autotrack.core.AutoTrackHandler;
+import com.gl.autotrack.core.AutoTrackThread;
 import com.gl.autotrack.util.ViewMsgUtil;
 
 import java.io.File;

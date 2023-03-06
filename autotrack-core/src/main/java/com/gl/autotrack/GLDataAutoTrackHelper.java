@@ -2,6 +2,8 @@ package com.gl.autotrack;
 
 import android.view.View;
 
+import com.gl.autotrack.constant.Constants;
+
 @SuppressWarnings("unused")
 public class GLDataAutoTrackHelper {
 

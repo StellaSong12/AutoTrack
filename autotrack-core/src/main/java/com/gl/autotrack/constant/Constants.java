@@ -1,4 +1,4 @@
-package com.gl.autotrack;
+package com.gl.autotrack.constant;
 
 public class Constants {
     public static final int MESSAGE_TRACK_VIEW_ON_CLICK = 0x0001;

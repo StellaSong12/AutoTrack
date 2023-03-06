@@ -1,4 +1,4 @@
-package com.gl.autotrack;
+package com.gl.autotrack.core;
 
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -6,6 +6,8 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 
+import com.gl.autotrack.GLAutoTrackManager;
+import com.gl.autotrack.constant.Constants;
 import com.gl.autotrack.util.ViewMsgUtil;
 
 public class AutoTrackHandler extends Handler {

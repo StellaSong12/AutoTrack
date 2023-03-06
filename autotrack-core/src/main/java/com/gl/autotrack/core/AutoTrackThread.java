@@ -1,4 +1,4 @@
-package com.gl.autotrack;
+package com.gl.autotrack.core;
 
 import android.os.HandlerThread;
 
@@ -14,7 +14,7 @@ public class AutoTrackThread extends HandlerThread {
         if (sThread == null) {
             synchronized (AutoTrackThread.class) {
                 if (sThread == null) {
-                    sThread = new AutoTrackThread("web-socket-handler");
+                    sThread = new AutoTrackThread("auto-track-handler");
                     sThread.start();
                 }
             }
