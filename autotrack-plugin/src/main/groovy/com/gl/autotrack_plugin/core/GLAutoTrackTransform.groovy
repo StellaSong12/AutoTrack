@@ -70,15 +70,21 @@ class GLAutoTrackTransform extends Transform {
     }
 
     @Override
+    boolean isCacheable() {
+        return true
+    }
+
+    @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
+        long startTime = System.currentTimeMillis()
         beforeTransform(transformInvocation)
         transformClass(transformInvocation.context, transformInvocation.inputs, transformInvocation.outputProvider, transformInvocation.incremental)
         afterTransform()
+        Logger.warn("此次编译共耗时:${System.currentTimeMillis() - startTime}毫秒")
     }
 
     private void transformClass(Context context, Collection<TransformInput> inputs, TransformOutputProvider outputProvider, boolean isIncremental)
             throws IOException, TransformException, InterruptedException {
-        long startTime = System.currentTimeMillis()
         if (!isIncremental) {
             outputProvider.deleteAll()
         }
@@ -118,14 +124,11 @@ class GLAutoTrackTransform extends Transform {
         if (waitableExecutor) {
             waitableExecutor.waitForTasksWithQuickFail(true)
         }
-
-        Logger.warn("此次编译共耗时:${System.currentTimeMillis() - startTime}毫秒")
     }
 
     private void beforeTransform(TransformInvocation transformInvocation) {
         //打印提示信息
         Logger.setDebug(transformHelper.extension.debug)
-        transformHelper.onTransform()
         Logger.printPluginConfig(transformHelper.disableGlAutoTrackMultiThread,
                 transformHelper.disableGlAutoTrackIncremental,
                 transformInvocation.incremental, transformHelper.isHookOnMethodEnter)
@@ -158,7 +161,6 @@ class GLAutoTrackTransform extends Transform {
         }
         def urlArray = urlList as URL[]
         urlClassLoader = new URLClassLoader(urlArray)
-        transformHelper.urlClassLoader = urlClassLoader
         ModuleUtils.checkModuleStatus(urlClassLoader)
         if (!isProjectLibrary) {
             checkHookSDK()
@@ -331,6 +333,13 @@ class GLAutoTrackTransform extends Transform {
             tmpNameHex = DigestUtils.md5Hex(jarFile.absolutePath).substring(0, 8)
         }
         def outputJar = new File(tempDir, tmpNameHex + jarFile.name)
+
+        boolean isChanged = isJarModified(file)
+        if (!isChanged) {
+            FileUtils.copyFile(jarFile, outputJar)
+            return outputJar
+        }
+
         JarOutputStream jarOutputStream = new JarOutputStream(new FileOutputStream(outputJar))
         Enumeration enumeration = file.entries()
 
@@ -364,7 +373,7 @@ class GLAutoTrackTransform extends Transform {
                 }
                 if (!jarEntry.isDirectory() && entryName.endsWith(".class")) {
                     className = entryName.replace("/", ".").replace(".class", "")
-                    ClassNameAutoTrack classNameAutoTrack = transformHelper.AutoTrack(className)
+                    ClassNameAutoTrack classNameAutoTrack = transformHelper.autoTrack(className)
                     if (classNameAutoTrack.isShouldModify) {
                         modifiedClassBytes = modifyClass(sourceClassBytes, classNameAutoTrack)
                     }
@@ -382,6 +391,26 @@ class GLAutoTrackTransform extends Transform {
         return outputJar
     }
 
+    private boolean isJarModified(JarFile file) {
+        Enumeration enumeration = file.entries()
+        while (enumeration.hasMoreElements()) {
+            JarEntry jarEntry = (JarEntry) enumeration.nextElement()
+            String entryName = jarEntry.getName()
+            if (entryName.endsWith(".DSA") || entryName.endsWith(".SF")) {
+                //ignore
+            } else {
+                if (!jarEntry.isDirectory() && entryName.endsWith(".class")) {
+                    String className = entryName.replace("/", ".").replace(".class", "")
+                    ClassNameAutoTrack classNameAutoTrack = transformHelper.autoTrack(className)
+                    if (classNameAutoTrack.isShouldModify) {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
+
     /**
      * 真正修改类中方法字节码
      */
@@ -395,10 +424,9 @@ class GLAutoTrackTransform extends Transform {
         } catch (Exception ex) {
             Logger.error("$classNameAutoTrack.className 类执行 modifyClass 方法出现异常")
             ex.printStackTrace()
-            //  todo: sst test
-            if (transformHelper.extension.debug) {
-                throw new Error()
-            }
+//            if (transformHelper.extension.debug) {
+//                throw new Error()
+//            }
             return srcClass
         }
     }
@@ -411,7 +439,7 @@ class GLAutoTrackTransform extends Transform {
         FileOutputStream outputStream = null
         try {
             String className = path2ClassName(classFile.absolutePath.replace(dir.absolutePath + File.separator, ""))
-            ClassNameAutoTrack classNameAutoTrack = transformHelper.AutoTrack(className)
+            ClassNameAutoTrack classNameAutoTrack = transformHelper.autoTrack(className)
             if (classNameAutoTrack.isShouldModify) {
                 byte[] sourceClassBytes = GLAutoTrackUtil.toByteArrayAndAutoCloseStream(new FileInputStream(classFile))
                 byte[] modifiedClassBytes = modifyClass(sourceClassBytes, classNameAutoTrack)

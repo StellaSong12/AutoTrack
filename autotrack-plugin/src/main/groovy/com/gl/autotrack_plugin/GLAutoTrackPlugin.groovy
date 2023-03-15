@@ -23,15 +23,15 @@ class GLAutoTrackPlugin implements Plugin<Project> {
     void apply(Project project) {
         rootProject = project.rootProject
         Map<String, ?> properties = project.getProperties()
-        // 开关
-        boolean disableGlAutoTrackPlugin = Boolean.parseBoolean(properties.getOrDefault("glAutoTrack.disablePlugin", String.valueOf(!GitUtil.switchOn)))
+        // 开关。默认release打包开
+        boolean disableGlAutoTrackPlugin = Boolean.parseBoolean(properties.getOrDefault("glAutoTrack.disablePlugin", String.valueOf(!isSwitchOn())))
         // debug
         boolean debugPlugin = Boolean.parseBoolean(properties.getOrDefault("glAutoTrack.debugPlugin", "false"))
-        // 是否开启多线程编译
+        // 是否开启多线程编译，默认开
         boolean disableGlAutoTrackMultiThreadBuild = Boolean.parseBoolean(properties.getOrDefault("glAutoTrack.disableMultiThreadBuild", "false"))
-        // 是否开启增量编译
-        boolean disableGlAutoTrackIncrementalBuild = Boolean.parseBoolean(properties.getOrDefault("glAutoTrack.disableIncrementalBuild", "true"))
-        // 是否在方法进入时插入代码
+        // 是否开启增量编译，默认开
+        boolean disableGlAutoTrackIncrementalBuild = Boolean.parseBoolean(properties.getOrDefault("glAutoTrack.disableIncrementalBuild", "false"))
+        // 是否在方法进入时插入代码，默认关
         boolean isHookOnMethodEnter = Boolean.parseBoolean(properties.getOrDefault("glAutoTrack.isHookOnMethodEnter", "false"))
         // 指定asm版本
         String asmVersion = properties.getOrDefault("glAutoTrack.asmVersion", "ASM7")
@@ -60,5 +60,22 @@ class GLAutoTrackPlugin implements Plugin<Project> {
         } else {
             Logger.info("------------Autotrack 未启动--------------")
         }
+    }
+
+    static boolean isSwitchOn() {
+        if (!rootProject) {
+            return false
+        }
+        List<String> taskNames = rootProject.gradle.startParameter.taskNames
+        for (int index = 0; index < taskNames.size(); ++index) {
+            String taskName = taskNames[index]
+            Logger.info("input start parameter task is ${taskName}")
+            // assembleRelease下屏蔽Prepare，这里因为还没有执行Task，没法直接通过当前的BuildType来判断，所以直接分析当前的startParameter中的taskname，
+            // 另外这里有一个小坑task的名字不能是缩写必须是全称 例如assembleDebug不能是任何形式的缩写输入
+            if (taskName.endsWith("Debug") && taskName.contains("Debug")) {
+                return false
+            }
+        }
+        return true
     }
 }

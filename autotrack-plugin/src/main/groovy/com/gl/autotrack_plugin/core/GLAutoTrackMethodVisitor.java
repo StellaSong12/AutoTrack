@@ -206,7 +206,7 @@ public class GLAutoTrackMethodVisitor extends AutoTrackMethodVisitor {
         }
 
         if (!GLAutoTrackUtil.isTargetClassInSpecial(mClassName)) {
-            if ((mClassName.startsWith("android/") || mClassName.startsWith("androidx/")) && !(mClassName.startsWith("android/support/v17/leanback") || mClassName.startsWith("androidx/leanback"))) {
+            if ((mClassName.startsWith("android/") || mClassName.startsWith("androidx/"))) {
                 return;
             }
         }

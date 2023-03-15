@@ -5,6 +5,20 @@ plugins {
 
 android {
 
+    signingConfigs {
+        debug {
+            storeFile file('../autotrack.keystore')
+            storePassword '163163'
+            keyAlias 'autotrack'
+            keyPassword '163163'
+        }
+        release {
+            storeFile file('../autotrack.keystore')
+            storePassword '163163'
+            keyAlias 'autotrack'
+            keyPassword '163163'
+        }
+    }
     dataBinding {
         enabled = true
     }
@@ -23,6 +37,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -33,11 +48,9 @@ android {
         viewBinding true
     }
 
-//    glAutoTrack {
-//        debug = false
-////    disablePlugin false
-//    }
-
+    lintOptions {
+        checkReleaseBuilds false
+    }
 }
 
 allprojects {
